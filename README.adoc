@@ -9,7 +9,8 @@ toc::[]
 
 == Purpose
 
-Demonstrates duplicate class files added by `@com_google_protobuf//:protobuf_java_util` and
+Demonstrates that https://github.com/protocolbuffers/protobuf/pull/9195 fixes
+duplicate class files added by `@com_google_protobuf//:protobuf_java_util` and
 https://docs.bazel.build/versions/main/be/java.html#java_proto_library[`java_proto_library`].
 
 == Running
