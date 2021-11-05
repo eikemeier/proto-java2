@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package example.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "examplev1";
+option java_multiple_files = true;
+option java_outer_classname = "ExampleProto";
+option java_package = "com.example.v1";
+
+// Hello time.
+message Hello {
+  google.protobuf.Timestamp time = 1;
+}

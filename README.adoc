@@ -1,0 +1,46 @@
+= Java Protobuf Dependencies
+:Author:    Oliver Eikemeier
+:Email:     <eikemeier@fillmore-labs.com>
+:Date:      2021-11
+:Revision:  v0.4
+:toc: macro
+
+toc::[]
+
+== Purpose
+
+Demonstrates duplicate class files added by `@com_google_protobuf//:protobuf_java_util` and
+https://docs.bazel.build/versions/main/be/java.html#java_proto_library[`java_proto_library`].
+
+== Running
+
+https://github.com/bazelbuild/bazelisk#installation[Install bazelisk], then run
+
+[source,shell]
+bazelisk run //:main
+
+== Impact
+
+Containers build with `java_image` are affected, test with:
+
+[source,shell]
+bazel run //:container
+
+This needs a local docker installation. Otherwise, just retrieve the list of relevant files with:
+
+[source,shell]
+bazel build //:container
+tar tvf "$(bazel info bazel-bin)/src/main/java/com/example/container-layer.tar"
+tar xOf "$(bazel info bazel-bin)/src/main/java/com/example/container-layer.tar" \
+  ./app/com_example_proto_java2/src/main/java/com/example/container.classpath | tr : \\n
+
+In the example, we see an unecessary overhead of 1.2 M (1,274,705 = 10,812 + 507,438 + 71,771 + 684,684)
+bytes:
+
+```
+[...]       10812  [...]/com_google_protobuf/libtimestamp_proto-speed.jar
+[...]     1166514  [...]/com_google_protobuf/java/core/libcore.jar
+[...]      507438  [...]/com_google_protobuf/java/core/liblite_runtime_only.jar
+[...]       71771  [...]/com_google_protobuf/java/util/libutil.jar
+[...]      684684  [...]/com_google_protobuf/java/core/liblite.jar
+```
